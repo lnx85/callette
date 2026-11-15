@@ -10,7 +10,7 @@
 #     scheda pubblica e va online dopo la revisione. La scheda deve già esistere.
 #   Con la variabile AMO_PUBLISH impostata a "false" la scheda pubblica viene saltata.
 #
-# Chrome Web Store (API V2, service account; la scheda deve già esistere):
+# Chrome Web Store (API V2, service account con token firmato da tools/cws_token.py; la scheda deve già esistere):
 #   secret CWS_SERVICE_ACCOUNT_JSON  chiave JSON del service account
 #   variabili CWS_PUBLISHER_ID, CWS_EXTENSION_ID
 #   Lo zip viene caricato e inviato in revisione; dopo l'approvazione va online da solo.
@@ -100,21 +100,13 @@ jobs:
             --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET" --approval-timeout 0
           echo "::notice::Versione ${{ steps.version.outputs.version }} inviata ad AMO: va online dopo la revisione."
 
-      - name: Accesso al Chrome Web Store
-        id: cws-auth
-        if: steps.exists.outputs.exists == 'false' && env.CWS_KEY != '' && env.CWS_PUBLISHER_ID != '' && env.CWS_EXTENSION_ID != ''
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
-          token_format: access_token
-          access_token_scopes: https://www.googleapis.com/auth/chromewebstore
-          create_credentials_file: false
-
       - name: Invia la versione al Chrome Web Store
-        if: steps.cws-auth.outcome == 'success'
+        if: steps.exists.outputs.exists == 'false' && env.CWS_KEY != '' && env.CWS_PUBLISHER_ID != '' && env.CWS_EXTENSION_ID != ''
         env:
-          TOKEN: ${{ steps.cws-auth.outputs.access_token }}
+          CWS_SERVICE_ACCOUNT_JSON: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
         run: |
+          TOKEN=$(python3 tools/cws_token.py)
+          echo "::add-mask::$TOKEN"
           base="https://chromewebstore.googleapis.com"
           item="publishers/$CWS_PUBLISHER_ID/items/$CWS_EXTENSION_ID"
           auth=(-H "Authorization: Bearer $TOKEN")
