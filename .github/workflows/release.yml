@@ -1,10 +1,19 @@
-# Build e release: a ogni push su main, se la versione in extension/manifest.json
-# non ha ancora una release, pubblica la release vX.Y.Z con i pacchetti.
+# Build, release e store: a ogni push su main, se la versione in extension/manifest.json
+# non ha ancora una release, pubblica la release vX.Y.Z con i pacchetti e, se configurati,
+# invia le versioni store in revisione su addons.mozilla.org e sul Chrome Web Store.
 #
-# Facoltativo, firma per Firefox: con i secrets del repository AMO_JWT_ISSUER e
-# AMO_JWT_SECRET (addons.mozilla.org → Developer Hub → Manage API Keys) l'.xpi
-# viene firmato da Mozilla come estensione "non in elenco", installabile in modo
-# permanente in qualsiasi Firefox. Senza, viene allegato l'.xpi non firmato.
+# Firefox (secrets AMO_JWT_ISSUER, AMO_JWT_SECRET: addons.mozilla.org → Developer Hub →
+# Manage API Keys):
+#   - l'.xpi della release GitHub (ID callette-github@callette.addon) viene firmato da
+#     Mozilla come estensione "non in elenco", installabile in modo permanente;
+#   - l'.xpi store (ID callette@callette.addon) viene caricato come nuova versione della
+#     scheda pubblica e va online dopo la revisione. La scheda deve già esistere.
+#   Con la variabile AMO_PUBLISH impostata a "false" la scheda pubblica viene saltata.
+#
+# Chrome Web Store (API V2, service account; la scheda deve già esistere):
+#   secret CWS_SERVICE_ACCOUNT_JSON  chiave JSON del service account
+#   variabili CWS_PUBLISHER_ID, CWS_EXTENSION_ID
+#   Lo zip viene caricato e inviato in revisione; dopo l'approvazione va online da solo.
 name: Build e release
 
 on:
@@ -26,6 +35,10 @@ jobs:
       # step-level env is not visible to a step's own `if`
       AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
       AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+      AMO_PUBLISH: ${{ vars.AMO_PUBLISH }}
+      CWS_KEY: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+      CWS_PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
+      CWS_EXTENSION_ID: ${{ vars.CWS_EXTENSION_ID }}
       DONATE_URL: ${{ vars.DONATE_URL || 'https://ko-fi.com/lnx85' }}
     steps:
       - uses: actions/checkout@v4
@@ -78,3 +91,47 @@ jobs:
             "dist/callette-$v-firefox.xpi" \
             "dist/callette-$v-chrome-store.zip" \
             "dist/callette-$v-firefox-store.xpi"
+
+      # Store uploads run after the GitHub release: a store refusing a package doesn't block it.
+      - name: Invia la versione a addons.mozilla.org
+        if: steps.exists.outputs.exists == 'false' && env.AMO_JWT_ISSUER != '' && env.AMO_PUBLISH != 'false'
+        run: |
+          npx --yes web-ext@8 sign --channel=listed --source-dir dist/firefox-store --artifacts-dir dist/amo \
+            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET" --approval-timeout 0
+          echo "::notice::Versione ${{ steps.version.outputs.version }} inviata ad AMO: va online dopo la revisione."
+
+      - name: Accesso al Chrome Web Store
+        id: cws-auth
+        if: steps.exists.outputs.exists == 'false' && env.CWS_KEY != '' && env.CWS_PUBLISHER_ID != '' && env.CWS_EXTENSION_ID != ''
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/chromewebstore
+
+      - name: Invia la versione al Chrome Web Store
+        if: steps.cws-auth.outcome == 'success'
+        env:
+          TOKEN: ${{ steps.cws-auth.outputs.access_token }}
+        run: |
+          base="https://chromewebstore.googleapis.com"
+          item="publishers/$CWS_PUBLISHER_ID/items/$CWS_EXTENSION_ID"
+          auth=(-H "Authorization: Bearer $TOKEN")
+          res=$(curl -sS --fail-with-body "${auth[@]}" -X POST -T "dist/callette-${{ steps.version.outputs.version }}-chrome-store.zip" \
+            "$base/upload/v2/$item:upload")
+          echo "upload: $res"
+          state=$(jq -r '.uploadState' <<<"$res")
+          for _ in $(seq 1 30); do
+            [ "$state" = "IN_PROGRESS" ] || break
+            sleep 10
+            res=$(curl -sS --fail-with-body "${auth[@]}" "$base/v2/$item:fetchStatus")
+            state=$(jq -r '.lastAsyncUploadState // "IN_PROGRESS"' <<<"$res")
+          done
+          if [ "$state" != "SUCCEEDED" ]; then
+            echo "::error::Caricamento sul Chrome Web Store non riuscito ($state): $res"
+            exit 1
+          fi
+          res=$(curl -sS --fail-with-body "${auth[@]}" -X POST -H "Content-Type: application/json" \
+            -d '{"publishType": "DEFAULT_PUBLISH"}' "$base/v2/$item:publish")
+          echo "publish: $res"
+          echo "::notice::Versione ${{ steps.version.outputs.version }} inviata al Chrome Web Store: $(jq -r '.state' <<<"$res")"

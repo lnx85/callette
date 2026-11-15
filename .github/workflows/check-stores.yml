@@ -1,0 +1,90 @@
+# Verifica delle credenziali degli store (solo lettura: non carica né pubblica nulla).
+# Avvio manuale: Actions → Verifica credenziali store → Run workflow.
+name: Verifica credenziali store
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  amo:
+    name: addons.mozilla.org
+    runs-on: ubuntu-latest
+    env:
+      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+      AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+    steps:
+      - name: Autenticazione e schede
+        run: |
+          python3 - <<'EOF'
+          import base64, hashlib, hmac, json, os, time, urllib.error, urllib.request, uuid
+
+          iss, secret = os.environ["AMO_JWT_ISSUER"], os.environ["AMO_JWT_SECRET"]
+          if not iss or not secret:
+              raise SystemExit("::error::AMO_JWT_ISSUER o AMO_JWT_SECRET mancanti")
+
+          def b64(d):
+              return base64.urlsafe_b64encode(d).rstrip(b"=").decode()
+
+          def get(path):
+              now = int(time.time())
+              head = b64(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
+              body = b64(json.dumps({"iss": iss, "jti": str(uuid.uuid4()), "iat": now, "exp": now + 60}).encode())
+              sig = b64(hmac.new(secret.encode(), f"{head}.{body}".encode(), hashlib.sha256).digest())
+              req = urllib.request.Request(f"https://addons.mozilla.org/api/v5/{path}",
+                                           headers={"Authorization": f"JWT {head}.{body}.{sig}"})
+              try:
+                  with urllib.request.urlopen(req) as r:
+                      return r.status, json.load(r)
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read().decode()[:300]
+
+          status, me = get("accounts/profile/")
+          if status != 200:
+              raise SystemExit(f"::error::Credenziali AMO rifiutate (HTTP {status}): {me}")
+          print(f"OK: autenticato come {me.get('name') or me.get('username')}")
+
+          for gid in ("callette@callette.addon", "callette-github@callette.addon"):
+              status, a = get(f"addons/addon/{gid}/")
+              if status == 200:
+                  v = (a.get("current_version") or {}).get("version")
+                  print(f"{gid}: stato {a.get('status')}, versione pubblica {v}")
+              else:
+                  print(f"{gid}: non trovata (HTTP {status}) — normale finché non viene caricata la prima versione")
+          EOF
+
+  cws:
+    name: Chrome Web Store
+    runs-on: ubuntu-latest
+    env:
+      CWS_PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
+      CWS_EXTENSION_ID: ${{ vars.CWS_EXTENSION_ID }}
+    steps:
+      - name: Variabili
+        run: |
+          [ -n "$CWS_PUBLISHER_ID" ] || { echo "::error::Variabile CWS_PUBLISHER_ID mancante"; exit 1; }
+          [[ "$CWS_EXTENSION_ID" =~ ^[a-p]{32}$ ]] || { echo "::error::CWS_EXTENSION_ID non valido: '$CWS_EXTENSION_ID'"; exit 1; }
+          echo "OK: publisher $CWS_PUBLISHER_ID, estensione $CWS_EXTENSION_ID"
+
+      - name: Accesso con il service account
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/chromewebstore
+
+      - name: Stato dell'articolo
+        env:
+          TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: |
+          url="https://chromewebstore.googleapis.com/v2/publishers/$CWS_PUBLISHER_ID/items/$CWS_EXTENSION_ID:fetchStatus"
+          code=$(curl -sS -o res.json -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$url")
+          cat res.json; echo
+          if [ "$code" != 200 ]; then
+            echo "::error::Chrome Web Store ha risposto HTTP $code: controlla che l'email del service account sia nel Developer Dashboard (Account) e che publisher ID ed ID estensione siano giusti"
+            exit 1
+          fi
+          echo "OK: il service account può gestire l'articolo"

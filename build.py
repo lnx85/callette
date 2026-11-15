@@ -7,7 +7,7 @@
     ./build.py            -> dist/<target>/ (unpacked) and dist/callette-<ver>-<target>.<zip|xpi>
 
     chromium       GitHub build for Chromium browsers (load unpacked; fixed ID via "key")
-    firefox        GitHub build for Firefox
+    firefox        GitHub build for Firefox (own ID, signed as unlisted)
     chrome-store   Chrome Web Store / Edge Add-ons upload: no "key", no YouTube
     firefox-store  addons.mozilla.org listing: no YouTube
 
@@ -27,7 +27,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "extension"
 DIST = ROOT / "dist"
-GECKO_ID = "callette@callette.addon"
+GECKO_ID = "callette@callette.addon"                 # addons.mozilla.org listing (firefox-store)
+GECKO_ID_GITHUB = "callette-github@callette.addon"   # GitHub build, signed as unlisted: AMO versions are unique per ID
 SKIP = {".DS_Store"}
 
 
@@ -48,7 +49,7 @@ def store_manifest(m: dict) -> dict:
     return m
 
 
-def firefox_manifest(m: dict) -> dict:
+def firefox_manifest(m: dict, gecko_id: str = GECKO_ID) -> dict:
     m = dict(m)
     m.pop("key", None)                      # Chromium-only: fixes the extension ID
     m.pop("minimum_chrome_version", None)
@@ -58,7 +59,7 @@ def firefox_manifest(m: dict) -> dict:
     m["background"] = {"scripts": [sw], "type": "module"}
     m["browser_specific_settings"] = {
         "gecko": {
-            "id": GECKO_ID,
+            "id": gecko_id,
             "strict_min_version": "128.0",  # storage.session, MV3 host-permission prompt
             "data_collection_permissions": {"required": ["none"]},
         }
@@ -94,7 +95,7 @@ def main():
     DIST.mkdir()
     targets = (
         ("chromium", chromium_manifest, "zip", False),
-        ("firefox", firefox_manifest, "xpi", False),
+        ("firefox", lambda m: firefox_manifest(m, GECKO_ID_GITHUB), "xpi", False),
         ("chrome-store", store_manifest, "zip", True),
         ("firefox-store", firefox_manifest, "xpi", True),
     )

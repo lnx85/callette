@@ -63,6 +63,11 @@ workflow pubblica la release `vX.Y.Z` se la versione del manifest è nuova; test
 `docs/store/` (`listing.md`, `images/{en,it}/`), l'informativa privacy in `docs/PRIVACY.md`. I testi dell'interfaccia
 si modificano in `tools/messages.py`.
 
+Pubblicazione automatica sugli store: dopo la prima approvazione di ogni scheda, il workflow invia in revisione ogni
+nuova versione su addons.mozilla.org (secrets `AMO_JWT_ISSUER`, `AMO_JWT_SECRET`) e sul Chrome Web Store (secret
+`CWS_SERVICE_ACCOUNT_JSON`, variabili `CWS_PUBLISHER_ID`, `CWS_EXTENSION_ID`, API V2 con service account). La build
+Firefox di GitHub ha un ID suo (`callette-github@callette.addon`) e viene firmata come estensione "non in elenco".
+
 ## Installazione
 
 - **Chromium/Brave/Chrome/Edge**: `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non

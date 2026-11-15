@@ -94,7 +94,9 @@ own UI and falls back to English. To add a language: add a column to the table a
 | addons.mozilla.org | `dist/firefox-store/` | `callette-<ver>-firefox-store.xpi` |
 
 `extension/` is the source (Chromium manifest) and can be loaded directly. For Firefox only the manifest changes:
-background as an *event page*, no `offscreen` and `key`, ID `callette@callette.addon`.
+background as an *event page*, no `offscreen` and `key`; ID `callette@callette.addon` for addons.mozilla.org,
+`callette-github@callette.addon` for the GitHub build (signed as a separate *unlisted* add-on, since AMO accepts each
+version number only once per ID).
 
 ## Releases
 
@@ -107,6 +109,18 @@ On every push to `main`, `.github/workflows/release.yml` reads `version` from `e
   `AMO_JWT_SECRET` (addons.mozilla.org API keys) the workflow signs the `.xpi` as an *unlisted* add-on.
 - Chromium doesn't install `.crx` files from outside the Web Store: load the zip in developer mode.
 - The repository variable `DONATE_URL` overrides the Ko-fi link used by the release builds.
+
+### Automatic store submissions
+
+Once the first version of each listing has been approved, the same workflow sends every new version to review; it
+goes live by itself once approved. Each store is skipped when its credentials are missing.
+
+| Store | Repository settings | Where to get them |
+|---|---|---|
+| addons.mozilla.org | secrets `AMO_JWT_ISSUER`, `AMO_JWT_SECRET` (shared with the GitHub signing); variable `AMO_PUBLISH=false` to skip the listing | Developer Hub → Manage API Keys |
+| Chrome Web Store | secret `CWS_SERVICE_ACCOUNT_JSON`; variables `CWS_PUBLISHER_ID`, `CWS_EXTENSION_ID` | Google Cloud: enable *Chrome Web Store API*, create a service account and a JSON key; Developer Dashboard → Account: add the service account email; publisher ID in *Publisher → Settings*, extension ID on the item page |
+
+The Chrome Web Store upload uses API V2 (V1 was retired on 15 October 2026).
 
 ## Stores
 

@@ -3,7 +3,7 @@
 | File | For | How to install |
 |---|---|---|
 | `callette-<ver>-chromium.zip` | Brave, Chrome, Chromium, Edge, Vivaldi | Extract the zip → `chrome://extensions` → *Developer mode* → *Load unpacked* → the extracted folder |
-| `callette-<ver>-firefox.xpi` | Firefox, LibreWolf, Waterfox | If signed: drag it into a Firefox window. If unsigned: Firefox Developer Edition/Nightly with `xpinstall.signatures.required = false`, or `about:debugging` → *Load Temporary Add-on* |
+| `callette-<ver>-firefox.xpi` | Firefox, LibreWolf, Waterfox (GitHub build, separate from the AMO listing) | If signed: drag it into a Firefox window. If unsigned: Firefox Developer Edition/Nightly with `xpinstall.signatures.required = false`, or `about:debugging` → *Load Temporary Add-on* |
 | `callette-<ver>-chrome-store.zip` | Chrome Web Store, Edge Add-ons | Store uploads only (no `key`, no YouTube) |
 | `callette-<ver>-firefox-store.xpi` | addons.mozilla.org | Store uploads only (no YouTube) |
 
