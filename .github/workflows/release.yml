@@ -1,0 +1,80 @@
+# Build e release: a ogni push su main, se la versione in extension/manifest.json
+# non ha ancora una release, pubblica la release vX.Y.Z con i pacchetti.
+#
+# Facoltativo, firma per Firefox: con i secrets del repository AMO_JWT_ISSUER e
+# AMO_JWT_SECRET (addons.mozilla.org → Developer Hub → Manage API Keys) l'.xpi
+# viene firmato da Mozilla come estensione "non in elenco", installabile in modo
+# permanente in qualsiasi Firefox. Senza, viene allegato l'.xpi non firmato.
+name: Build e release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      # step-level env is not visible to a step's own `if`
+      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+      AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+      DONATE_URL: ${{ vars.DONATE_URL || 'https://ko-fi.com/lnx85' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Versione dal manifest
+        id: version
+        run: |
+          version=$(python3 -c 'import json; print(json.load(open("extension/manifest.json"))["version"])')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Release già esistente?
+        id: exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::La release ${{ steps.version.outputs.tag }} esiste già: aumenta la versione in extension/manifest.json per pubblicarne una nuova."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        run: ./build.py
+
+      - name: Firma l'estensione Firefox (non in elenco)
+        if: steps.exists.outputs.exists == 'false' && env.AMO_JWT_ISSUER != ''
+        run: |
+          npx --yes web-ext@8 sign --channel=unlisted --source-dir dist/firefox --artifacts-dir dist/signed \
+            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+          mv dist/signed/*.xpi "dist/callette-${{ steps.version.outputs.version }}-firefox.xpi"
+
+      - name: Pubblica la release
+        if: steps.exists.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="${{ steps.version.outputs.version }}"
+          sed "s/<ver>/$v/g" docs/release-notes.md > dist/release-notes.md
+          gh release create "${{ steps.version.outputs.tag }}" \
+            --target "$GITHUB_SHA" \
+            --title "Callette $v" \
+            --notes-file dist/release-notes.md --generate-notes \
+            "dist/callette-$v-chromium.zip" \
+            "dist/callette-$v-firefox.xpi" \
+            "dist/callette-$v-chrome-store.zip" \
+            "dist/callette-$v-firefox-store.xpi"

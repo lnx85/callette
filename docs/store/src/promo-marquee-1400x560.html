@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="style.css">
+<style>
+  .wrap { grid-template-columns: 1fr 560px; align-items: center; padding: 0 80px; height: 100%; display: grid; gap: 40px; }
+  .copy { flex-direction: column; display: flex; gap: 22px; }
+  h1 { font-size: 64px; }
+  .stack { position: relative; height: 420px; }
+  .stack > div { filter: drop-shadow(0 24px 40px #000a); position: absolute; width: 380px; }
+  .stack .a { transform: rotate(-12deg); left: 0; top: 20px; }
+  .stack .b { transform: rotate(5deg); left: 150px; top: 120px; }
+  .rec { box-shadow: 0 0 0 10px #ff2e4d33, 0 0 40px #ff2e4d88; border-radius: 50%; background: var(--rec); position: absolute; height: 54px; width: 54px; right: 20px; top: 10px; }
+</style></head><body>
+<div class="wrap">
+  <div class="copy">
+    <div class="brand"><img src="assets/icon.svg">Callette</div>
+    <h1 data-t="tagline"></h1>
+    <p class="lead" data-t="promo_sub"></p>
+  </div>
+  <div class="stack">
+    <div class="a" data-cassette='{"color":"#a78bfa","label":"@c_webm","side":"B","left":0.8}'></div>
+    <div class="b" data-cassette='{"color":"#ff6a3d","label":"@c_mkv","left":0.35}'></div>
+    <span class="rec"></span>
+  </div>
+</div>
+<script src="strings.js"></script><script src="common.js"></script>
+</body></html>

@@ -1,0 +1,290 @@
+{
+  "extName": {
+    "message": "Callette – Registratore di video e chiamate"
+  },
+  "extDescription": {
+    "message": "Registra il video che scegli in una pagina, anche videochiamate e dirette WebRTC, e lo salva in MKV, MP4 o WebM."
+  },
+  "settings": {
+    "message": "Impostazioni"
+  },
+  "recFormat": {
+    "message": "Formato delle registrazioni"
+  },
+  "recConvert": {
+    "message": "Converti in questo formato allo stop"
+  },
+  "recConvertHelp": {
+    "message": "MKV: stesse tracce del WebM registrato, senza ricodifica. MP4: H.264 + AAC, registrato direttamente in H.264 dove il browser lo permette, altrimenti convertito allo stop. Se disattivo, salva il WebM registrato dal browser."
+  },
+  "recHero": {
+    "message": "Videochiamate, dirette e video della pagina"
+  },
+  "recHeroHelp": {
+    "message": "Premi il pulsante, poi clicca il video da registrare."
+  },
+  "recButton": {
+    "message": "● Registra un video"
+  },
+  "recordings": {
+    "message": "Registrazioni"
+  },
+  "clearFinished": {
+    "message": "rimuovi completate"
+  },
+  "noRecordings": {
+    "message": "Nessuna registrazione. Le registrazioni in corso e quelle da salvare compaiono qui."
+  },
+  "donate": {
+    "message": "Sostieni Callette ♥"
+  },
+  "credits": {
+    "message": "Callette $p1$ — di lnx85 · licenza GPL-3.0",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "youtubeUnsupported": {
+    "message": "I video di YouTube non sono supportati."
+  },
+  "stopAndSave": {
+    "message": "stop e salva"
+  },
+  "cancel": {
+    "message": "annulla"
+  },
+  "saveAs": {
+    "message": "salva…"
+  },
+  "showFile": {
+    "message": "mostra file"
+  },
+  "discard": {
+    "message": "scarta"
+  },
+  "remove": {
+    "message": "rimuovi"
+  },
+  "recClock": {
+    "message": "● REC $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "stageSaved": {
+    "message": "Salvata"
+  },
+  "stageUnsaved": {
+    "message": "Non salvata"
+  },
+  "stageCancelled": {
+    "message": "Annullata"
+  },
+  "stageError": {
+    "message": "Errore"
+  },
+  "errSuspended": {
+    "message": "Interrotta: il browser ha sospeso l'estensione"
+  },
+  "errEngineRestarted": {
+    "message": "Interrotta: il motore di registrazione è stato riavviato"
+  },
+  "errSaveFailed": {
+    "message": "Salvataggio non riuscito: $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "errSaveFailedCode": {
+    "message": "Salvataggio non riuscito ($p1$)",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "interrupted": {
+    "message": "interrotto"
+  },
+  "errNoAccess": {
+    "message": "Il browser non permette alle estensioni di accedere a questa pagina."
+  },
+  "errNotPlaying": {
+    "message": "I video della pagina non si possono registrare: avvia la riproduzione e riprova."
+  },
+  "errNoVideos": {
+    "message": "Nessun video trovato in questa pagina."
+  },
+  "errUnknownTab": {
+    "message": "Scheda sconosciuta"
+  },
+  "recPickAgain": {
+    "message": "Scegli di nuovo il video dal pulsante dell'estensione."
+  },
+  "recNoResponse": {
+    "message": "L'estensione non risponde"
+  },
+  "eng_stageRecording": {
+    "message": "Registrazione"
+  },
+  "eng_stagePreparing": {
+    "message": "Preparo il file"
+  },
+  "eng_stageConverting": {
+    "message": "Converto in $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "eng_stageChooseDest": {
+    "message": "Scegli dove salvare"
+  },
+  "eng_cancelled": {
+    "message": "Annullata"
+  },
+  "eng_error": {
+    "message": "Errore"
+  },
+  "eng_noData": {
+    "message": "Nessun dato registrato"
+  },
+  "eng_writeFailed": {
+    "message": "Scrittura non riuscita: $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "eng_convertImpossible": {
+    "message": "Conversione in $p1$ non possibile: $p2$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "eng_convertFailed": {
+    "message": "Conversione non riuscita, salvato come $p1$: $p2$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "p_labelStream": {
+    "message": "● Registra questo video"
+  },
+  "p_labelCapture": {
+    "message": "● Registra (cattura dal player)"
+  },
+  "p_labelOff": {
+    "message": "Non registrabile"
+  },
+  "p_offTitle": {
+    "message": "Il video non è ancora partito o non espone il suo flusso"
+  },
+  "p_banner": {
+    "message": "Callette: clicca il video da registrare"
+  },
+  "p_cancel": {
+    "message": "Annulla"
+  },
+  "p_close": {
+    "message": "Chiudi"
+  },
+  "p_video": {
+    "message": "Video"
+  },
+  "p_withAudio": {
+    "message": "con audio"
+  },
+  "p_noAudio": {
+    "message": "senza audio"
+  },
+  "p_capture": {
+    "message": "cattura dal player"
+  },
+  "p_otherAudio": {
+    "message": "Aggiungi l'audio degli altri elementi della pagina ($p1$)",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "p_saveHint": {
+    "message": "Allo stop scegli dove salvare il file."
+  },
+  "p_starting": {
+    "message": "Avvio…"
+  },
+  "p_record": {
+    "message": "● Registra"
+  },
+  "p_discard": {
+    "message": "annulla"
+  },
+  "p_stop": {
+    "message": "■ Stop"
+  },
+  "p_stopping": {
+    "message": "Chiudo la registrazione…"
+  },
+  "p_stopped": {
+    "message": "Registrazione terminata: scegli dove salvare il file."
+  },
+  "p_aborted": {
+    "message": "Registrazione annullata."
+  },
+  "p_error": {
+    "message": "Errore"
+  },
+  "p_cantRecord": {
+    "message": "Impossibile registrare questo video: $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "p_cantStart": {
+    "message": "Impossibile avviare la registrazione: $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "p_noTracks": {
+    "message": "il video non ha tracce attive"
+  },
+  "p_recorderError": {
+    "message": "errore del registratore"
+  },
+  "p_untitled": {
+    "message": "registrazione"
+  },
+  "p_audioCount": {
+    "message": "$p1$ audio",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  }
+}

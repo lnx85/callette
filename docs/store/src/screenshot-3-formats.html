@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="style.css">
+<style>
+  .wrap { flex-direction: column; align-items: center; padding: 64px 70px; height: 100%; display: flex; gap: 22px; }
+  .wrap h1, .wrap .lead { text-align: center; }
+  .wrap .lead { max-width: 820px; }
+  .tapes { grid-template-columns: repeat(3, 1fr); margin-top: 34px; display: grid; width: 100%; gap: 46px; }
+  .tapes figure { flex-direction: column; align-items: center; display: flex; gap: 26px; }
+  .tapes figure > div { filter: drop-shadow(0 24px 40px #0009); width: 100%; }
+  .tapes figure:nth-child(1) > div { transform: rotate(-4deg); }
+  .tapes figure:nth-child(3) > div { transform: rotate(4deg); }
+  figcaption { text-align: center; line-height: 1.5; color: var(--muted); font-size: 18px; }
+  figcaption b { color: var(--text); font-size: 26px; }
+</style></head><body>
+<div class="wrap">
+  <div class="brand"><img src="assets/icon.svg">Callette</div>
+  <h1 data-t="s3_h1"></h1>
+  <p class="lead" data-t="s3_lead"></p>
+  <div class="tapes">
+    <figure><div data-cassette='{"color":"#ff6a3d","label":"@c_mkv","note":"MKV · VP9 + OPUS","left":0.3}'></div><figcaption data-t="f_mkv"></figcaption></figure>
+    <figure><div data-cassette='{"color":"#4fb8c5","label":"@c_mp4","note":"MP4 · H.264 + AAC","side":"B","left":0.6}'></div><figcaption data-t="f_mp4"></figcaption></figure>
+    <figure><div data-cassette='{"color":"#a78bfa","label":"@c_webm","note":"WEBM · AS RECORDED","left":0.8}'></div><figcaption data-t="f_webm"></figcaption></figure>
+  </div>
+</div>
+<script src="strings.js"></script><script src="common.js"></script>
+</body></html>

@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="style.css">
+<style>
+  .wrap { grid-template-columns: 1fr 420px; padding: 70px 70px 0 0; height: 100%; display: grid; gap: 44px; }
+  .copy { flex-direction: column; padding-top: 30px; display: flex; gap: 26px; }
+  .list { flex-direction: column; display: flex; gap: 14px; }
+  .list span { align-items: center; font-size: 19px; display: flex; gap: 12px; }
+  .list i { border-radius: 50%; background: var(--rec); height: 10px; width: 10px; }
+  .browser { border-radius: 0 14px 0 0; height: 760px; width: 770px; }
+  .call { grid-template-columns: 1fr; padding: 14px; }
+  .tile.big { height: 520px; }
+  .strip { grid-template-columns: repeat(3, 1fr); padding: 0 14px; display: grid; gap: 10px; }
+  .strip .tile { height: 120px; }
+</style></head><body>
+<div class="wrap">
+  <div class="browser shadow">
+    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url" data-t="url"></div><div class="ext"><img src="assets/icon.svg"></div></div>
+    <div class="call"><div class="tile big" data-person='{"bg":"#3b2f52","skin":"#e9b48f","shirt":"#4fd1c5","hair":"#3a2418"}'><span class="name" data-t="n1"></span></div></div>
+    <div class="strip">
+      <div class="tile" data-person='{"bg":"#2c4a52","skin":"#c98e6b","shirt":"#ff8f52","hair":"#1d1512"}'><span class="name" data-t="n2"></span></div>
+      <div class="tile" data-person='{"bg":"#523a2c","skin":"#f1c9a5","shirt":"#a78bfa","hair":"#8a5a2b"}'><span class="name" data-t="n3"></span></div>
+      <div class="tile" data-person='{"bg":"#2f3a52","skin":"#8d5e45","shirt":"#ffd166","hair":"#120c0a"}'><span class="name" data-t="n4"></span></div>
+    </div>
+    <div class="ring" style="left:14px; top:60px; width:742px; height:520px"></div>
+    <div class="panel" style="right:30px; top:76px; width:330px">
+      <div class="head"><span>Callette</span></div>
+      <div class="row"><span class="dot"></span><span class="clock">24:17</span><span class="muted" style="flex:1">412,6 MB</span><span class="muted" style="text-decoration:underline" data-t="discard"></span><span class="btn stop" data-t="stop"></span></div>
+    </div>
+  </div>
+  <div class="copy">
+    <div class="brand"><img src="assets/icon.svg">Callette</div>
+    <h1 data-t="s2_h1"></h1>
+    <p class="lead" data-t="s2_lead"></p>
+    <div class="list">
+      <span><i></i><span data-t="s2_b1"></span></span>
+      <span><i></i><span data-t="s2_b2"></span></span>
+      <span><i></i><span data-t="s2_b3"></span></span>
+    </div>
+  </div>
+</div>
+<script src="strings.js"></script><script src="common.js"></script>
+</body></html>

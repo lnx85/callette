@@ -1,0 +1,96 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later — Callette, https://github.com/lnx85/callette (based on Fluxy by lorisilbagnino) */
+:root {
+  --bg: #15121a;
+  --surface: #1f1b26;
+  --surface-2: #2a2433;
+  --border: #3a3245;
+  --text: #f1ecf4;
+  --muted: #a198ad;
+  --accent: #ff6a3d;
+  --accent-ink: #1f0a00;
+  --danger: #f2555a;
+  --ok: #3fc98a;
+  --radius: 10px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #faf6f0; --surface: #ffffff; --surface-2: #f2ebe2; --border: #e3d9cc;
+    --text: #231c18; --muted: #6e6259; --accent: #e8521f; --accent-ink: #ffffff;
+    color-scheme: light;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  overflow-x: hidden;
+  color: var(--text);
+  max-height: 600px;
+  overflow-y: auto;
+  width: 400px;
+  margin: 0;
+}
+header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  align-items: center;
+  padding: 10px 14px;
+  position: sticky;
+  display: flex;
+  z-index: 2;
+  gap: 8px;
+  top: 0;
+}
+header h1 { letter-spacing: .2px; font-size: 15px; margin: 0; flex: 1; }
+main { padding: 12px 14px 14px; min-width: 0; }
+h2 { text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-size: 11px; margin: 0; }
+.section-head { justify-content: space-between; align-items: center; margin: 16px 0 8px; display: flex; }
+.muted { color: var(--muted); }
+.empty { font-size: 12px; margin: 0; }
+
+button { cursor: pointer; font: inherit; }
+.icon-btn { color: var(--muted); background: none; padding: 2px 4px; font-size: 16px; border: 0; }
+.icon-btn:hover { color: var(--text); }
+.link { text-underline-offset: 2px; text-decoration: underline; color: var(--muted); background: none; font-size: 12px; padding: 0; border: 0; }
+.link:hover { color: var(--text); }
+.primary { background: var(--accent); color: var(--accent-ink); white-space: nowrap; border-radius: 8px; padding: 8px 14px; font-weight: 600; border: 0; }
+.primary:disabled { cursor: not-allowed; opacity: .45; }
+button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.panel { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin: 10px 14px 0; display: grid; padding: 12px; gap: 10px; }
+.panel label { color: var(--muted); font-size: 12px; display: grid; gap: 4px; }
+.panel label.check { align-items: flex-start; color: var(--text); font-size: 13px; cursor: pointer; display: flex; gap: 8px; }
+.panel label.check input { accent-color: var(--accent); margin-top: 3px; }
+.panel label.check small { color: var(--muted); font-size: 11.5px; margin-top: 2px; display: block; }
+select { border: 1px solid var(--border); background: var(--surface-2); border-radius: 7px; color: var(--text); padding: 6px 8px; font: inherit; width: 100%; }
+
+.rec-hero { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); align-items: center; display: flex; padding: 12px; gap: 12px; }
+.rec-text { font-weight: 600; font-size: 13px; flex: 1; }
+.rec-text small { color: var(--muted); font-size: 11.5px; font-weight: 400; margin-top: 2px; display: block; }
+.rec-error { margin-top: 6px; }
+.err { word-break: break-word; color: var(--danger); font-size: 12px; }
+
+.job { grid-template-columns: minmax(0, 1fr); border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin-bottom: 8px; padding: 10px 12px; display: grid; min-width: 0; gap: 6px; }
+.job-top { align-items: baseline; display: flex; min-width: 0; gap: 8px; }
+.job-top .link { white-space: nowrap; flex-shrink: 0; }
+.job-top .stop-rec { color: var(--danger); }
+.job-name { text-overflow: ellipsis; white-space: nowrap; font-weight: 600; overflow: hidden; min-width: 0; flex: 1; }
+.bar { background: var(--surface-2); border-radius: 999px; overflow: hidden; height: 6px; }
+.bar > i { background: var(--accent); transition: width .3s; display: block; height: 100%; width: 0; }
+.job.done .bar > i { background: var(--ok); }
+.job.error .bar > i, .job.cancelled .bar > i { background: var(--danger); }
+.job.recording .bar > i { animation: pulse 1.6s ease-in-out infinite; background: var(--danger); }
+.job-info { justify-content: space-between; color: var(--muted); font-size: 12px; display: flex; min-width: 0; gap: 8px; }
+.job-info > span:first-child { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; min-width: 0; }
+.job-info > span:last-child { white-space: nowrap; flex-shrink: 0; }
+.job.error .job-info > span:first-child { white-space: normal; }
+.job-note { word-break: break-word; font-size: 11.5px; }
+@keyframes pulse { 50% { opacity: .3; } }
+.donate { text-decoration: none; color: var(--accent); justify-self: start; font-size: 12px; }
+.donate:hover { text-decoration: underline; }
+.credits { border-top: 1px solid var(--border); flex-direction: column; padding-top: 8px; display: flex; gap: 2px; }
+.credits a { text-decoration: none; color: var(--muted); font-size: 11px; }
+.credits a:hover { text-decoration: underline; color: var(--text); }

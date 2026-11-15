@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="style.css">
+<style>
+  .wrap { grid-template-columns: 1fr 470px; align-items: center; padding: 0 90px 0 80px; height: 100%; display: grid; gap: 70px; }
+  .copy { flex-direction: column; display: flex; gap: 26px; }
+  .list { flex-direction: column; display: flex; gap: 14px; }
+  .list span { align-items: center; font-size: 19px; display: flex; gap: 12px; }
+  .list i { border-radius: 50%; background: var(--ok); height: 10px; width: 10px; }
+  .tape { filter: drop-shadow(0 20px 30px #0009); position: absolute; transform: rotate(12deg); width: 230px; right: 40px; top: 560px; }
+  .popup { position: relative; z-index: 1; }
+  .popup header img { height: 26px; width: 26px; }
+  .job.rec .barx i { background: #f2555a; width: 100%; }
+  .job.done .barx i { background: var(--ok); width: 100%; }
+  .job.unsaved .barx i { width: 0; }
+</style></head><body>
+<div class="tape" data-cassette='{"color":"#a78bfa","label":"@c_webm","side":"B","left":0.5}'></div>
+<div class="wrap">
+  <div class="copy">
+    <div class="brand"><img src="assets/icon.svg">Callette</div>
+    <h1 data-t="s5_h1"></h1>
+    <p class="lead" data-t="s5_lead"></p>
+    <div class="list">
+      <span><i></i><span data-t="s5_b1"></span></span>
+      <span><i></i><span data-t="s5_b2"></span></span>
+      <span><i></i><span data-t="s5_b3"></span></span>
+    </div>
+  </div>
+  <div class="popup shadow">
+    <header><img src="assets/icon.svg"><b>Callette</b><span style="color:var(--muted)">⚙</span></header>
+    <main>
+      <div class="hero"><span><span data-t="p_hero"></span><small data-t="p_heroHelp"></small></span><span class="btn primary" data-t="p_btn"></span></div>
+      <h2 data-t="p_recordings"></h2>
+      <div class="job rec"><div class="top"><b data-t="p_j1"></b><a class="red" data-t="p_stopSave"></a><a data-t="p_cancel"></a></div><div class="barx"><i></i></div><div class="info"><span data-t="p_j1i"></span><span>412,6 MB</span></div></div>
+      <div class="job done"><div class="top"><b data-t="p_j2"></b><a data-t="p_show"></a><a data-t="p_remove"></a></div><div class="barx"><i></i></div><div class="info"><span data-t="p_j2i"></span><span>1,21 GB</span></div></div>
+      <div class="job unsaved"><div class="top"><b data-t="p_j3"></b><a data-t="p_save"></a><a data-t="p_discard"></a></div><div class="barx"><i></i></div><div class="info"><span data-t="p_j3i"></span><span>356,0 MB</span></div></div>
+    </main>
+  </div>
+</div>
+<script src="strings.js"></script><script src="common.js"></script>
+</body></html>

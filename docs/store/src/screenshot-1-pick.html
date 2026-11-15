@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="style.css">
+<style>
+  .wrap { grid-template-columns: 400px 1fr; padding: 70px 0 0 70px; height: 100%; display: grid; gap: 44px; }
+  .copy { flex-direction: column; padding-top: 24px; display: flex; gap: 26px; }
+  .chips { flex-wrap: wrap; margin-top: 6px; display: flex; gap: 10px; }
+  .browser { height: 760px; width: 770px; }
+  .call { grid-template-rows: 300px 300px; }
+  .tape { transform: rotate(-8deg); width: 230px; margin-top: 14px; }
+</style></head><body>
+<div class="wrap">
+  <div class="copy">
+    <div class="brand"><img src="assets/icon.svg">Callette</div>
+    <h1 data-t="s1_h1"></h1>
+    <p class="lead" data-t="s1_lead"></p>
+    <div class="chips">
+      <span class="chip"><i style="background:var(--accent)"></i><span data-t="s1_c1"></span></span>
+      <span class="chip"><i style="background:var(--teal)"></i><span data-t="s1_c2"></span></span>
+      <span class="chip"><i style="background:var(--violet)"></i><span data-t="s1_c3"></span></span>
+    </div>
+    <div class="tape" data-cassette='{"color":"#ff6a3d","label":"@c_mkv","left":0.7}'></div>
+  </div>
+  <div class="browser shadow">
+    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url" data-t="url"></div><div class="ext"><img src="assets/icon.svg"></div></div>
+    <div class="call">
+      <div class="tile" data-person='{"bg":"#3b2f52","skin":"#e9b48f","shirt":"#4fd1c5","hair":"#3a2418"}'><span class="name" data-t="n1"></span></div>
+      <div class="tile" data-person='{"bg":"#2c4a52","skin":"#c98e6b","shirt":"#ff8f52","hair":"#1d1512"}'><span class="name" data-t="n2"></span></div>
+      <div class="tile" data-person='{"bg":"#523a2c","skin":"#f1c9a5","shirt":"#a78bfa","hair":"#8a5a2b"}'><span class="name" data-t="n3"></span></div>
+      <div class="tile" data-person='{"bg":"#2f3a52","skin":"#8d5e45","shirt":"#ffd166","hair":"#120c0a"}'><span class="name" data-t="n4"></span></div>
+    </div>
+    <div class="callbar"><i></i><i></i><i class="end"></i><i></i></div>
+    <div class="pickbox" style="left:14px; top:60px; width:366px; height:300px"><span class="label" data-t="labelStream"></span></div>
+    <div class="pickbox" style="left:390px; top:60px; width:366px; height:300px"><span class="label" data-t="labelStream"></span></div>
+    <div class="pickbox" style="left:14px; top:370px; width:366px; height:300px"><span class="label" data-t="labelStream"></span></div>
+    <div class="pickbox" style="left:390px; top:370px; width:366px; height:300px"><span class="label" data-t="labelStream"></span></div>
+    <div class="banner" style="left:385px; top:58px"><span data-t="banner"></span><span class="ghost" data-t="cancel"></span></div>
+  </div>
+</div>
+<script src="strings.js"></script><script src="common.js"></script>
+</body></html>

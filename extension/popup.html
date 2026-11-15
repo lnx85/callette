@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Callette</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="icons/icon32.png" alt="" width="24" height="24">
+    <h1>Callette</h1>
+    <button id="btn-settings" class="icon-btn" data-i18n-title="settings" data-i18n-aria="settings">⚙</button>
+  </header>
+
+  <section id="settings" class="panel" hidden>
+    <label><span data-i18n="recFormat"></span>
+      <select id="set-container"><option value="mkv">MKV</option><option value="mp4">MP4</option></select>
+    </label>
+    <label class="check">
+      <input id="set-rec-convert" type="checkbox">
+      <span><span data-i18n="recConvert"></span>
+        <small data-i18n="recConvertHelp"></small></span>
+    </label>
+    <a id="donate" class="donate" target="_blank" rel="noopener" hidden data-i18n="donate"></a>
+    <!-- Appropriate Legal Notices (GPL-3.0 §5d, ADDITIONAL-TERMS.md term 1): keep in modified versions -->
+    <div class="credits">
+      <a id="credits" href="https://github.com/lnx85/callette" target="_blank" rel="noopener"></a>
+      <a href="https://github.com/lorisilbagnino/fluxy" target="_blank" rel="noopener">Based on Fluxy by lorisilbagnino</a>
+    </div>
+  </section>
+
+  <main>
+    <div class="rec-hero">
+      <span class="rec-text"><span data-i18n="recHero"></span>
+        <small data-i18n="recHeroHelp"></small></span>
+      <button id="btn-rec" class="primary" data-i18n="recButton"></button>
+    </div>
+    <div id="rec-error" class="err rec-error" hidden></div>
+
+    <div class="section-head">
+      <h2 data-i18n="recordings"></h2>
+      <button id="btn-clear-jobs" class="link" data-i18n="clearFinished" hidden></button>
+    </div>
+    <div id="jobs"></div>
+    <p id="empty" class="muted empty" data-i18n="noRecordings"></p>
+  </main>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

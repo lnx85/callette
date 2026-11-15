@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap');
+:root {
+  --bg1: #120e18; --bg2: #241a2e; --text: #f6f0f8; --muted: #a99fb6; --accent: #ff6a3d; --accent2: #ff8f52;
+  --rec: #ff2e4d; --cream: #fff1dc; --card: #1f1b26; --border: #3a3245; --ok: #3fc98a; --teal: #4fd1c5; --violet: #a78bfa;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: radial-gradient(1100px 700px at 88% 10%, #4a2420 0%, transparent 60%),
+              radial-gradient(900px 600px at 0% 100%, #231a3a 0%, transparent 60%),
+              linear-gradient(160deg, var(--bg2), var(--bg1));
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text);
+}
+body::after {
+  background-image: repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 4px);
+  pointer-events: none;
+  position: fixed;
+  content: "";
+  inset: 0;
+}
+.brand { align-items: center; font-weight: 800; font-size: 24px; display: flex; gap: 12px; }
+.brand img { height: 44px; width: 44px; }
+h1 { letter-spacing: -1.4px; line-height: 1.06; font-weight: 900; font-size: 56px; }
+h1 em { font-style: normal; color: var(--accent); }
+.lead { line-height: 1.5; color: var(--muted); font-size: 21px; }
+.hand { font-family: Caveat, cursive; font-weight: 700; }
+.chip { border: 1px solid var(--border); display: inline-flex; padding: 7px 14px; border-radius: 999px; background: #ffffff0d; align-items: center; color: var(--text); font-size: 15px; gap: 8px; }
+.chip i { border-radius: 50%; display: inline-block; height: 9px; width: 9px; }
+.shadow { box-shadow: 0 30px 80px #0009, 0 0 0 1px #ffffff14; }
+
+/* browser window */
+.browser { border-radius: 14px 0 0 0; background: #0d0a11; position: relative; overflow: hidden; }
+.bar { border-bottom: 1px solid var(--border); padding: 0 16px; background: #1f1828; align-items: center; display: flex; height: 46px; gap: 14px; }
+.dots { display: flex; gap: 7px; }
+.dots i { border-radius: 50%; background: #43394f; height: 12px; width: 12px; }
+.url { border-radius: 8px; background: #120e18; align-items: center; padding: 0 12px; font-size: 14px; color: #8f849c; display: flex; height: 28px; flex: 1; }
+.ext { border-radius: 7px; background: #2d2438; place-items: center; position: relative; display: grid; height: 30px; width: 30px; }
+.ext img { width: 22px; }
+
+/* video call */
+.call { grid-template-columns: 1fr 1fr; background: #0d0a11; padding: 14px; display: grid; gap: 10px; }
+.tile { border-radius: 12px; position: relative; overflow: hidden; }
+.tile svg { display: block; height: 100%; width: 100%; }
+.tile .name { background: #000a; border-radius: 6px; position: absolute; padding: 3px 8px; font-size: 13px; bottom: 8px; left: 8px; }
+.callbar { justify-content: center; padding: 10px 0 16px; display: flex; gap: 12px; }
+.callbar i { border-radius: 50%; background: #2d2438; height: 40px; width: 40px; }
+.callbar i.end { background: #e5384f; width: 64px; border-radius: 20px; }
+
+/* overlay of the extension (same look as recorder/page.js) */
+.pickbox { background: rgba(255, 106, 61, .18); border: 3px solid var(--accent); border-radius: 12px; position: absolute; }
+.pickbox .label { background: var(--accent); border-radius: 5px; position: absolute; padding: 4px 9px; font-weight: 700; color: #1f0a00; font-size: 14px; left: 8px; top: 8px; }
+.ring { box-shadow: 0 0 0 4px rgba(255, 46, 77, .25); border: 3px solid var(--rec); border-radius: 12px; position: absolute; }
+.panel { box-shadow: 0 10px 34px #000a; border: 1px solid var(--border); border-radius: 12px; background: #15121a; padding: 12px 14px; position: absolute; font-size: 15px; display: grid; gap: 10px; }
+.panel .head { justify-content: space-between; align-items: center; font-weight: 700; display: flex; }
+.panel .row { align-items: center; display: flex; gap: 10px; }
+.panel .muted { color: var(--muted); font-size: 13px; }
+.panel .dot { animation: none; background: var(--rec); border-radius: 50%; height: 11px; width: 11px; }
+.panel .clock { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; }
+.btn { border-radius: 8px; padding: 7px 13px; font-weight: 700; font-size: 14px; }
+.btn.primary { background: var(--accent); color: #1f0a00; }
+.btn.stop { background: #f2555a; color: #fff; }
+.banner { transform: translateX(-50%); border: 1px solid var(--border); box-shadow: 0 8px 26px #000a; padding: 8px 10px 8px 16px; border-radius: 10px; background: #15121a; align-items: center; position: absolute; font-size: 15px; display: flex; gap: 12px; }
+.banner .ghost { border: 1px solid var(--border); background: #2a2433; border-radius: 8px; padding: 5px 10px; font-size: 13px; }
+
+/* popup mock (same look as popup.html) */
+.popup { border: 1px solid var(--border); border-radius: 14px; background: #15121a; overflow: hidden; font-size: 14px; }
+.popup header { border-bottom: 1px solid var(--border); align-items: center; padding: 12px 16px; display: flex; gap: 10px; }
+.popup header b { font-size: 16px; flex: 1; }
+.popup main { padding: 14px 16px 16px; display: grid; gap: 12px; }
+.popup .hero { border: 1px solid var(--border); border-radius: 10px; background: #1f1b26; align-items: center; padding: 12px; display: flex; gap: 12px; }
+.popup .hero span { font-weight: 600; flex: 1; }
+.popup .hero small { color: var(--muted); font-weight: 400; display: block; font-size: 12px; }
+.popup h2 { text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-size: 11px; }
+.job { border: 1px solid var(--border); border-radius: 10px; background: #1f1b26; padding: 10px 12px; display: grid; gap: 7px; }
+.job .top { align-items: baseline; display: flex; gap: 10px; }
+.job .top b { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; flex: 1; }
+.job .top a { text-decoration: underline; color: var(--muted); font-size: 12px; }
+.job .top a.red { color: #f2555a; }
+.job .barx { border-radius: 99px; background: #2a2433; overflow: hidden; height: 6px; }
+.job .barx i { background: var(--accent); display: block; height: 100%; }
+.job .info { justify-content: space-between; color: var(--muted); font-size: 12px; display: flex; }
